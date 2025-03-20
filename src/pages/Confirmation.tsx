@@ -2,7 +2,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle, Home, Package } from 'lucide-react';
+import { CheckCircle, Home, Package, CreditCard } from 'lucide-react';
 import { Order } from '@/types/shop';
 import { useEffect } from 'react';
 
@@ -20,6 +20,10 @@ const Confirmation = () => {
   if (!order) {
     return null;
   }
+  
+  // Convert USD to Birr (approximate exchange rate)
+  const exchangeRate = 56.5; // 1 USD = 56.5 Birr (approximate)
+  const totalInBirr = order.total * exchangeRate;
   
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
@@ -59,6 +63,23 @@ const Confirmation = () => {
             <div className="flex justify-between font-medium">
               <span>Total</span>
               <span>${order.total.toFixed(2)}</span>
+            </div>
+          </div>
+          
+          <div className="bg-primary/5 rounded-md p-4 border border-primary/20">
+            <h3 className="font-medium flex items-center gap-2 mb-2 text-primary">
+              <CreditCard className="h-4 w-4" />
+              Payment Instructions
+            </h3>
+            <p className="text-sm mb-2">
+              Please send the payment to this TELEbirr account:
+            </p>
+            <p className="font-bold text-center my-2 text-lg">
+              0906171823
+            </p>
+            <div className="flex justify-between font-medium mt-3 pt-3 border-t border-primary/20">
+              <span>Total Amount in Birr:</span>
+              <span>{totalInBirr.toFixed(2)} Birr</span>
             </div>
           </div>
           
