@@ -1,7 +1,6 @@
 
 import { useState } from 'react';
 import { products, categories } from '../data/products';
-import { Product } from '../types/shop';
 import ProductCard from '../components/ProductCard';
 import Header from '../components/Header';
 import CartModal from '../components/CartModal';
@@ -23,10 +22,10 @@ const Index = () => {
       <main className="container pt-24 px-4 sm:px-6 animate-fade-in">
         <section className="text-center mb-8 space-y-2">
           <h1 className="text-3xl sm:text-4xl font-medium tracking-tight">
-            Discover our <span className="text-primary">Products</span>
+            Ethio <span className="text-primary">Telecom</span> Services
           </h1>
           <p className="text-muted-foreground max-w-md mx-auto">
-            Browse our collection of premium products designed with simplicity and elegance in mind.
+            Purchase airtime and packages with a 10% discount on all products.
           </p>
         </section>
         
