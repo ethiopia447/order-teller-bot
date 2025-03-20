@@ -1,23 +1,14 @@
 
 import { Order } from '../types/shop';
 
-// This would typically be an environment variable in a production app
-// For this demo, we'll use a placeholder
+// These values should be replaced with your actual Telegram bot token and chat ID
 const TELEGRAM_BOT_TOKEN = 'YOUR_BOT_TOKEN';
 const TELEGRAM_CHAT_ID = 'YOUR_CHAT_ID';
 
 export const sendOrderToTelegram = async (order: Order): Promise<boolean> => {
   try {
-    // In a real app, this would be an API call to your backend service
-    // which would then send the message to Telegram
-    // For this demo, we'll simulate a successful send
-    
-    console.log('Sending order to Telegram:', formatOrderForTelegram(order));
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    return true;
+    const message = formatOrderForTelegram(order);
+    return await sendTelegramMessage(message);
   } catch (error) {
     console.error('Error sending order to Telegram:', error);
     return false;
@@ -51,9 +42,7 @@ ${customer.notes ? `Notes: ${customer.notes}` : ''}
   return message;
 };
 
-// For a real implementation, you would send a POST request to the Telegram API
-// Example implementation using fetch:
-/*
+// Implementation of sending a Telegram message
 const sendTelegramMessage = async (message: string): Promise<boolean> => {
   const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
   
@@ -77,4 +66,3 @@ const sendTelegramMessage = async (message: string): Promise<boolean> => {
     return false;
   }
 };
-*/
