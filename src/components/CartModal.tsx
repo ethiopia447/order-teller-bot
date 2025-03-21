@@ -79,7 +79,7 @@ const CartModal = ({ open, onOpenChange }: CartModalProps) => {
             <div className="w-full space-y-4">
               <div className="flex items-center justify-between text-lg font-medium">
                 <span>Total</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>{totalPrice.toFixed(2)} Birr</span>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <SheetClose asChild>
@@ -106,18 +106,16 @@ const CartItemRow = ({ item, onRemove, onUpdateQuantity }: CartItemRowProps) => 
   
   return (
     <li className="flex gap-4 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-      <div className="h-20 w-20 rounded-md overflow-hidden bg-muted flex-shrink-0">
-        <img 
-          src={product.image} 
-          alt={product.name} 
-          className="h-full w-full object-cover"
-        />
+      <div className="h-20 w-20 rounded-md overflow-hidden bg-muted flex-shrink-0 flex items-center justify-center">
+        <div className="text-xl font-bold text-primary">
+          {product.category === 'airtime' ? product.name.split(' ')[0] : 'Package'}
+        </div>
       </div>
       
       <div className="flex-1 min-w-0">
         <div className="flex justify-between gap-2">
           <p className="font-medium truncate">{product.name}</p>
-          <p className="font-medium whitespace-nowrap">${product.price.toFixed(2)}</p>
+          <p className="font-medium whitespace-nowrap">{product.price.toFixed(2)} Birr</p>
         </div>
         
         <p className="text-sm text-muted-foreground line-clamp-1 mt-1">

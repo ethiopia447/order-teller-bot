@@ -21,10 +21,6 @@ const Confirmation = () => {
     return null;
   }
   
-  // Convert USD to Birr (approximate exchange rate)
-  const exchangeRate = 56.5; // 1 USD = 56.5 Birr (approximate)
-  const totalInBirr = order.total * exchangeRate;
-  
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-background">
       <Card className="w-full max-w-md animate-scale-in">
@@ -54,7 +50,7 @@ const Confirmation = () => {
                     {item.quantity} × {item.product.name}
                   </span>
                   <span className="font-medium">
-                    ${(item.product.price * item.quantity).toFixed(2)}
+                    {(item.product.price * item.quantity).toFixed(2)} Birr
                   </span>
                 </li>
               ))}
@@ -62,7 +58,7 @@ const Confirmation = () => {
             <div className="border-t my-3"></div>
             <div className="flex justify-between font-medium">
               <span>Total</span>
-              <span>${order.total.toFixed(2)}</span>
+              <span>{order.total.toFixed(2)} Birr</span>
             </div>
           </div>
           
@@ -78,8 +74,8 @@ const Confirmation = () => {
               0906171823
             </p>
             <div className="flex justify-between font-medium mt-3 pt-3 border-t border-primary/20">
-              <span>Total Amount in Birr:</span>
-              <span>{totalInBirr.toFixed(2)} Birr</span>
+              <span>Total Amount:</span>
+              <span>{order.total.toFixed(2)} Birr</span>
             </div>
           </div>
           

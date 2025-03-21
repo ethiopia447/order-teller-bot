@@ -1,15 +1,37 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { products, categories } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import Header from '../components/Header';
 import CartModal from '../components/CartModal';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Moon, Sun } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [cartOpen, setCartOpen] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    // Check for saved preference or system preference
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      return savedTheme === 'dark' || 
+        (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+  
+  useEffect(() => {
+    // Update class on document when dark mode changes
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
   
   const filteredProducts = selectedCategory === 'all' 
     ? products 
@@ -27,6 +49,16 @@ const Index = () => {
           <p className="text-muted-foreground max-w-md mx-auto">
             Purchase airtime and packages with a 10% discount on all products.
           </p>
+          
+          <div className="flex items-center justify-center mt-4 gap-2">
+            <Sun className="h-4 w-4" />
+            <Switch 
+              checked={darkMode} 
+              onCheckedChange={setDarkMode} 
+              aria-label="Toggle dark mode"
+            />
+            <Moon className="h-4 w-4" />
+          </div>
         </section>
         
         <div className="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-2 max-w-xl mx-auto">
