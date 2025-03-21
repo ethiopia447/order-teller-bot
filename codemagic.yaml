@@ -5,8 +5,7 @@ workflows:
     environment:
       vars:
         PACKAGE_NAME: "com.ethioairtime.airtime"  # Change this to your package name
-      android_signing:
-        - keystore_reference
+      
     scripts:
       - echo "Starting Android build..."
       - cd android && chmod +x gradlew
