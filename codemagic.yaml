@@ -8,8 +8,8 @@ workflows:
       
     scripts:
       - echo "Starting Android build..."
-      - cd android && chmod +x gradlew
-      - cd android && ./gradlew assembleRelease
+      - chmod +x gradlew
+      - ./gradlew assembleRelease
     artifacts:
       - android/app/build/outputs/**/*.apk
     publishing:
