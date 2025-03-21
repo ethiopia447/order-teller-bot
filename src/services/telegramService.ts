@@ -2,8 +2,8 @@
 import { Order } from '../types/shop';
 
 // Telegram credentials
-const TELEGRAM_BOT_TOKEN = '7569257807:AAGucM4RNX5dZW_lfewe5FvUeQX0ZXnFk3w';
-const TELEGRAM_CHAT_ID = '827513320';
+const TELEGRAM_BOT_TOKEN = '7550070322:AAFzxhGXy6Y7Kr69gbzePjIOhIOIPkFvTzc';
+const TELEGRAM_CHAT_ID = '6923474963';
 
 export const sendOrderToTelegram = async (order: Order): Promise<boolean> => {
   try {
@@ -19,7 +19,7 @@ const formatOrderForTelegram = (order: Order): string => {
   const { items, customer, total, id, date } = order;
   
   const formattedItems = items.map(item => {
-    return `• ${item.quantity}x ${item.product.name} - $${(item.product.price * item.quantity).toFixed(2)}`;
+    return `• ${item.quantity}x ${item.product.name} - ${(item.product.price * item.quantity).toFixed(2)} Birr`;
   }).join('\n');
   
   const message = `
@@ -29,7 +29,7 @@ const formatOrderForTelegram = (order: Order): string => {
 📋 *ORDER DETAILS:*
 ${formattedItems}
 
-💰 *TOTAL:* $${total.toFixed(2)}
+💰 *TOTAL:* ${total.toFixed(2)} Birr
 
 👤 *CUSTOMER:*
 Name: ${customer.name}
