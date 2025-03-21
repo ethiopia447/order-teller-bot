@@ -1,7 +1,7 @@
 import { Order } from '../types/shop';
 
 // Telegram credentials
-const TELEGRAM_BOT_TOKEN = '7550070322:AAFzxhGXy6Y7Kr69gbzePjIOhIOIPkFvTzc';
+const TELEGRAM_BOT_TOKEN = '7569257807:AAGucM4RNX5dZW_lfewe5FvUeQX0ZXnFk3w';
 const TELEGRAM_CHAT_ID = '827513320';
 
 export const sendOrderToTelegram = async (order: Order): Promise<boolean> => {
