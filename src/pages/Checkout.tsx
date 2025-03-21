@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardFooter, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft, ShoppingBag, Truck } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { sendOrderToTelegram } from '@/services/telegramService';
@@ -27,7 +26,7 @@ const Checkout = () => {
   
   const [isLoading, setIsLoading] = useState(false);
   
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -120,6 +119,7 @@ const Checkout = () => {
                 <CardContent className="space-y-4">
                   <div className="grid gap-4">
                     <div>
+                      <p className="text-sm text-muted-foreground mb-2">Your name and bank account name should be the same</p>
                       <Label htmlFor="name">Full Name *</Label>
                       <Input
                         id="name"
@@ -132,11 +132,11 @@ const Checkout = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="phone">Phone Number *</Label>
+                      <Label htmlFor="phone">Please enter the phone number or bank account to pay *</Label>
                       <Input
                         id="phone"
                         name="phone"
-                        placeholder="Your phone number"
+                        placeholder="Your phone number or bank account"
                         value={formData.phone}
                         onChange={handleInputChange}
                         required
@@ -144,39 +144,14 @@ const Checkout = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="address">Delivery Address *</Label>
-                      <Textarea
+                      <Label htmlFor="address">Please enter phone number the package you want receive *</Label>
+                      <Input
                         id="address"
                         name="address"
-                        placeholder="Your full address"
+                        placeholder="Recipient phone number"
                         value={formData.address}
                         onChange={handleInputChange}
                         required
-                        className="min-h-[80px]"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="email">Email (Optional)</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="Your email address"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="notes">Order Notes (Optional)</Label>
-                      <Textarea
-                        id="notes"
-                        name="notes"
-                        placeholder="Any special instructions"
-                        value={formData.notes}
-                        onChange={handleInputChange}
-                        className="min-h-[80px]"
                       />
                     </div>
                   </div>
@@ -208,7 +183,7 @@ const Checkout = () => {
                         {item.quantity} × {item.product.name}
                       </span>
                       <span className="font-medium">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        {(item.product.price * item.quantity).toFixed(2)} Birr
                       </span>
                     </li>
                   ))}
@@ -219,7 +194,7 @@ const Checkout = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>${totalPrice.toFixed(2)}</span>
+                    <span>{totalPrice.toFixed(2)} Birr</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping</span>
@@ -228,7 +203,7 @@ const Checkout = () => {
                   <Separator className="my-2" />
                   <div className="flex justify-between font-medium text-lg">
                     <span>Total</span>
-                    <span>${totalPrice.toFixed(2)}</span>
+                    <span>{totalPrice.toFixed(2)} Birr</span>
                   </div>
                 </div>
               </CardContent>
