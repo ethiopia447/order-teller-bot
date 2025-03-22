@@ -3,6 +3,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 33
+    
+    namespace "com.ethioairtime.airtime"
+    
     defaultConfig {
         applicationId "com.ethioairtime.airtime"
         minSdkVersion 21
