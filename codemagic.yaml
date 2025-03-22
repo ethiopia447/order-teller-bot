@@ -1,3 +1,4 @@
+
 workflows:
   android-app:
     name: Build Android APK
@@ -8,6 +9,7 @@ workflows:
       
     scripts:
       - echo "Starting Android build..."
+      - cd android
       - chmod +x gradlew
       - ./gradlew assembleRelease
     artifacts:

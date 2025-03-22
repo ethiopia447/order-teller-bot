@@ -76,44 +76,44 @@ export const products: Product[] = [
     category: 'airtime'
   },
   
-  // Package products (10% off actual value)
+  // Package products (30.7% off actual value)
   {
     id: '10',
     name: 'Weekly Unlimited Premium',
-    description: 'Unlimited Internet and SMS for a full week. 10% discount applied.',
-    price: 360, // 400 ETB with 10% discount
+    description: 'Unlimited Internet and SMS for a full week. 30.7% discount applied for a limited time.',
+    price: 277.16, // 400 ETB with 30.7% discount
     image: 'public/lovable-uploads/0187b354-03f1-4ee7-93d7-6f47e92d5a86.png',
     category: 'package'
   },
   {
     id: '11',
     name: 'Monthly Unlimited Premium Plan',
-    description: 'Unlimited Voice and Internet for a month. 10% discount applied.',
-    price: 881.1, // 979 ETB with 10% discount
+    description: 'Unlimited Voice and Internet for a month. 30.7% discount applied for a limited time.',
+    price: 678.45, // 979 ETB with 30.7% discount
     image: 'public/lovable-uploads/0187b354-03f1-4ee7-93d7-6f47e92d5a86.png',
     category: 'package'
   },
   {
     id: '12',
     name: 'Monthly Unlimited Internet and SMS',
-    description: 'Unlimited Internet and SMS for a full month. 10% discount applied.',
-    price: 1170, // 1300 ETB with 10% discount
+    description: 'Unlimited Internet and SMS for a full month. 30.7% discount applied for a limited time.',
+    price: 900.9, // 1300 ETB with 30.7% discount
     image: 'public/lovable-uploads/0187b354-03f1-4ee7-93d7-6f47e92d5a86.png',
     category: 'package'
   },
   {
     id: '13',
     name: 'Monthly Unlimited Premium Voice, Internet and SMS',
-    description: 'Complete unlimited package with voice, internet and SMS for a month. 10% discount applied.',
-    price: 1529.1, // 1699 ETB with 10% discount
+    description: 'Complete unlimited package with voice, internet and SMS for a month. 30.7% discount applied for a limited time.',
+    price: 1177.57, // 1699 ETB with 30.7% discount
     image: 'public/lovable-uploads/0187b354-03f1-4ee7-93d7-6f47e92d5a86.png',
     category: 'package'
   },
   {
     id: '14',
     name: 'Unlimited Premium Plus',
-    description: 'Local Unlimited Voice and Unlimited Internet for a month. 10% discount applied.',
-    price: 3600, // 4000 ETB with 10% discount
+    description: 'Local Unlimited Voice and Unlimited Internet for a month. 30.7% discount applied for a limited time.',
+    price: 2772, // 4000 ETB with 30.7% discount
     image: 'public/lovable-uploads/0187b354-03f1-4ee7-93d7-6f47e92d5a86.png',
     category: 'package'
   },
