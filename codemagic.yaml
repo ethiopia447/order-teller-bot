@@ -1,17 +1,15 @@
-
 workflows:
   android-app:
     name: Build Android APK
     max_build_duration: 120
     environment:
       vars:
-        PACKAGE_NAME: "com.ethioairtime.airtime"  # Change this to your package name
+        PACKAGE_NAME: "com.ethioairtime.airtime"  # Change this
       
     scripts:
       - echo "Starting Android build..."
-      - cd android
-      - chmod +x gradlew
-      - ./gradlew assembleRelease
+      - cd android && chmod +x gradlew
+      - cd android && ./gradlew assembleRelease
     artifacts:
       - android/app/build/outputs/**/*.apk
     publishing:
