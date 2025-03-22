@@ -12,6 +12,7 @@ workflows:
       - cd android && rm -f gradle/wrapper/gradle-wrapper.jar
       - cd android && gradle wrapper --gradle-version 7.5.1
       - cd android && chmod +x gradlew
+      - cd android && ./gradlew clean
       - cd android && ./gradlew assembleRelease
     artifacts:
       - android/app/build/outputs/**/*.apk
