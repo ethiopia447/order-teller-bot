@@ -5,11 +5,11 @@ workflows:
     max_build_duration: 120
     environment:
       vars:
-        PACKAGE_NAME: "com.ethioairtime.airtime"  # Change this
+        PACKAGE_NAME: "com.ethioairtime.airtime"
       
     scripts:
       - echo "Starting Android build..."
-      - cd android && rm -f gradle/wrapper/gradle-wrapper.jar
+      - cd android && rm -rf .gradle gradle/wrapper/gradle-wrapper.jar
       - cd android && gradle wrapper --gradle-version 7.5.1
       - cd android && chmod +x gradlew
       - cd android && ./gradlew clean
@@ -20,4 +20,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - "kalikalikalikali1234567@gmail.com"  # Replace with your email
+          - "kalikalikalikali1234567@gmail.com"
