@@ -53,3 +53,5 @@ jobs:
         with:
           name: app-release
           path: android/app/build/outputs/apk/release/app-release-unsigned.apk
+          if-no-files-found: error
+          retention-days: 90
