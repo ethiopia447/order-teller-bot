@@ -13,7 +13,7 @@ workflows:
       - cd android && gradle wrapper --gradle-version 7.5.1
       - cd android && chmod +x gradlew
       - cd android && ./gradlew clean
-      - cd android && ./gradlew assembleRelease -x lintVitalRelease
+      - cd android && ./gradlew assembleRelease -x lintVitalRelease --stacktrace --info
 
     artifacts:
       - android/app/build/outputs/**/*.apk
