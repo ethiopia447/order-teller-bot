@@ -10,7 +10,7 @@ workflows:
     scripts:
       - echo "Starting Android build..."
       - cd android && rm -rf .gradle gradle/wrapper/gradle-wrapper.jar
-      - cd android && gradle wrapper --gradle-version 7.5.1
+      - cd android && gradle wrapper --gradle-version 8.13
       - cd android && chmod +x gradlew
       - cd android && ./gradlew clean
       - cd android && ./gradlew assembleRelease -x lintVitalRelease --stacktrace --info
