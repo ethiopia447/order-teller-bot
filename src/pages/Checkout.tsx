@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { Customer } from '../types/shop';
@@ -10,9 +10,7 @@ import { Label } from '@/components/ui/label';
 import { ArrowLeft, ShoppingBag, Truck, CreditCard } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { sendOrderToTelegram } from '@/services/telegramService';
-import { initializeChapaPayment } from '@/services/chapaService';
 import { toast } from 'sonner';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Checkout = () => {
   const { state, totalPrice, totalItems, setCustomer, createOrder, clearCart } = useCart();
@@ -27,7 +25,6 @@ const Checkout = () => {
   });
   
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'telebirr' | 'chapa'>('telebirr');
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -57,42 +54,22 @@ const Checkout = () => {
       return;
     }
     
-    if (paymentMethod === 'chapa') {
-      // Process with Chapa payment
-      try {
-        const callbackUrl = `${window.location.origin}/confirmation?tx_ref=${order.id}`;
-        const chapaCheckoutUrl = await initializeChapaPayment(order, callbackUrl);
-        
-        if (chapaCheckoutUrl) {
-          // Redirect to Chapa checkout
-          window.location.href = chapaCheckoutUrl;
-        } else {
-          toast.error('Failed to initialize payment. Please try again.');
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Error processing order with Chapa:', error);
-        toast.error('An error occurred while processing your payment');
+    // Process with Telegram notification (TELEbirr)
+    try {
+      const success = await sendOrderToTelegram(order);
+      
+      if (success) {
+        // Clear cart and redirect to confirmation
+        clearCart();
+        navigate('/confirmation', { state: { order } });
+      } else {
+        toast.error('Failed to send order. Please try again.');
         setIsLoading(false);
       }
-    } else {
-      // Process with Telegram notification (TELEbirr)
-      try {
-        const success = await sendOrderToTelegram(order);
-        
-        if (success) {
-          // Clear cart and redirect to confirmation
-          clearCart();
-          navigate('/confirmation', { state: { order } });
-        } else {
-          toast.error('Failed to send order. Please try again.');
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Error processing order:', error);
-        toast.error('An error occurred while processing your order');
-        setIsLoading(false);
-      }
+    } catch (error) {
+      console.error('Error processing order:', error);
+      toast.error('An error occurred while processing your order');
+      setIsLoading(false);
     }
   };
   
@@ -189,48 +166,11 @@ const Checkout = () => {
                       />
                     </div>
                   </div>
-                  
-                  <div className="mt-6">
-                    <Label className="mb-2 block">Payment Method</Label>
-                    <Tabs 
-                      defaultValue="telebirr" 
-                      className="w-full"
-                      value={paymentMethod}
-                      onValueChange={(value) => setPaymentMethod(value as 'telebirr' | 'chapa')}
-                    >
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="telebirr">TELEbirr</TabsTrigger>
-                        <TabsTrigger value="chapa">Chapa (Card/Bank)</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="telebirr" className="mt-4 p-4 rounded-md bg-muted/50">
-                        <div className="text-sm">
-                          <p className="flex items-center mb-2">
-                            <CreditCard className="mr-2 h-4 w-4 text-primary" />
-                            Pay with TELEbirr
-                          </p>
-                          <p className="text-muted-foreground">
-                            After placing your order, you'll receive payment instructions to complete the transaction.
-                          </p>
-                        </div>
-                      </TabsContent>
-                      <TabsContent value="chapa" className="mt-4 p-4 rounded-md bg-muted/50">
-                        <div className="text-sm">
-                          <p className="flex items-center mb-2">
-                            <CreditCard className="mr-2 h-4 w-4 text-primary" />
-                            Pay with Chapa
-                          </p>
-                          <p className="text-muted-foreground">
-                            Securely pay using credit/debit card, mobile money, or bank transfer.
-                          </p>
-                        </div>
-                      </TabsContent>
-                    </Tabs>
-                  </div>
                 </CardContent>
                 
                 <CardFooter>
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Processing...' : paymentMethod === 'chapa' ? 'Proceed to Payment' : 'Complete Order'}
+                    {isLoading ? 'Processing...' : 'Complete Order'}
                   </Button>
                 </CardFooter>
               </form>
