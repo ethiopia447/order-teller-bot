@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardFooter, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowLeft, ShoppingBag, Truck } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Truck, CreditCard } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { sendOrderToTelegram } from '@/services/telegramService';
+import { initializeChapaPayment } from '@/services/chapaService';
 import { toast } from 'sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Checkout = () => {
   const { state, totalPrice, totalItems, setCustomer, createOrder, clearCart } = useCart();
@@ -25,6 +27,7 @@ const Checkout = () => {
   });
   
   const [isLoading, setIsLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'telebirr' | 'chapa'>('telebirr');
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,22 +57,42 @@ const Checkout = () => {
       return;
     }
     
-    // Send order to Telegram
-    try {
-      const success = await sendOrderToTelegram(order);
-      
-      if (success) {
-        // Clear cart and redirect to confirmation
-        clearCart();
-        navigate('/confirmation', { state: { order } });
-      } else {
-        toast.error('Failed to send order. Please try again.');
+    if (paymentMethod === 'chapa') {
+      // Process with Chapa payment
+      try {
+        const callbackUrl = `${window.location.origin}/confirmation?tx_ref=${order.id}`;
+        const chapaCheckoutUrl = await initializeChapaPayment(order, callbackUrl);
+        
+        if (chapaCheckoutUrl) {
+          // Redirect to Chapa checkout
+          window.location.href = chapaCheckoutUrl;
+        } else {
+          toast.error('Failed to initialize payment. Please try again.');
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Error processing order with Chapa:', error);
+        toast.error('An error occurred while processing your payment');
         setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error processing order:', error);
-      toast.error('An error occurred while processing your order');
-      setIsLoading(false);
+    } else {
+      // Process with Telegram notification (TELEbirr)
+      try {
+        const success = await sendOrderToTelegram(order);
+        
+        if (success) {
+          // Clear cart and redirect to confirmation
+          clearCart();
+          navigate('/confirmation', { state: { order } });
+        } else {
+          toast.error('Failed to send order. Please try again.');
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Error processing order:', error);
+        toast.error('An error occurred while processing your order');
+        setIsLoading(false);
+      }
     }
   };
   
@@ -119,7 +142,6 @@ const Checkout = () => {
                 <CardContent className="space-y-4">
                   <div className="grid gap-4">
                     <div>
-                      <p className="text-sm text-muted-foreground mb-2">Your name and bank account name should be the same</p>
                       <Label htmlFor="name">Full Name *</Label>
                       <Input
                         id="name"
@@ -132,11 +154,11 @@ const Checkout = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="phone">Please enter the phone number or bank account to pay *</Label>
+                      <Label htmlFor="phone">Phone Number *</Label>
                       <Input
                         id="phone"
                         name="phone"
-                        placeholder="Your phone number or bank account"
+                        placeholder="Your phone number"
                         value={formData.phone}
                         onChange={handleInputChange}
                         required
@@ -144,22 +166,71 @@ const Checkout = () => {
                     </div>
                     
                     <div>
-                      <Label htmlFor="address">Please enter phone number the package you want receive *</Label>
+                      <Label htmlFor="address">Shipping Address *</Label>
                       <Input
                         id="address"
                         name="address"
-                        placeholder="Recipient phone number"
+                        placeholder="Your shipping address"
                         value={formData.address}
                         onChange={handleInputChange}
                         required
                       />
                     </div>
+                    
+                    <div>
+                      <Label htmlFor="email">Email (Optional)</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        placeholder="Your email address"
+                        value={formData.email || ''}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6">
+                    <Label className="mb-2 block">Payment Method</Label>
+                    <Tabs 
+                      defaultValue="telebirr" 
+                      className="w-full"
+                      value={paymentMethod}
+                      onValueChange={(value) => setPaymentMethod(value as 'telebirr' | 'chapa')}
+                    >
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="telebirr">TELEbirr</TabsTrigger>
+                        <TabsTrigger value="chapa">Chapa (Card/Bank)</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="telebirr" className="mt-4 p-4 rounded-md bg-muted/50">
+                        <div className="text-sm">
+                          <p className="flex items-center mb-2">
+                            <CreditCard className="mr-2 h-4 w-4 text-primary" />
+                            Pay with TELEbirr
+                          </p>
+                          <p className="text-muted-foreground">
+                            After placing your order, you'll receive payment instructions to complete the transaction.
+                          </p>
+                        </div>
+                      </TabsContent>
+                      <TabsContent value="chapa" className="mt-4 p-4 rounded-md bg-muted/50">
+                        <div className="text-sm">
+                          <p className="flex items-center mb-2">
+                            <CreditCard className="mr-2 h-4 w-4 text-primary" />
+                            Pay with Chapa
+                          </p>
+                          <p className="text-muted-foreground">
+                            Securely pay using credit/debit card, mobile money, or bank transfer.
+                          </p>
+                        </div>
+                      </TabsContent>
+                    </Tabs>
                   </div>
                 </CardContent>
                 
                 <CardFooter>
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'Processing...' : 'Complete Order'}
+                    {isLoading ? 'Processing...' : paymentMethod === 'chapa' ? 'Proceed to Payment' : 'Complete Order'}
                   </Button>
                 </CardFooter>
               </form>
