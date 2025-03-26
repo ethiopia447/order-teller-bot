@@ -1,4 +1,3 @@
-
 import { ShoppingCart } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { Button } from './ui/button';
@@ -37,7 +36,7 @@ const Header = ({ onOpenCart }: HeaderProps) => {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all duration-300 border-b",
-        "py-4 sm:py-5 px-4 sm:px-6 lg:px-8", // Added responsive padding
+        "py-4 sm:py-5 px-4 sm:px-6 lg:px-8 rounded-b-xl",
         isScrolled 
           ? "bg-background/95 shadow-sm" 
           : "bg-background/50"
@@ -77,4 +76,3 @@ const Header = ({ onOpenCart }: HeaderProps) => {
 };
 
 export default Header;
-
