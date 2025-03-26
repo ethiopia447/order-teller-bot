@@ -1,4 +1,3 @@
-
 import { Product } from '../types/shop';
 import { useCart } from '../context/CartContext';
 import { Button } from './ui/button';
@@ -19,8 +18,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const isPackage = product.category === 'package';
   
   // Calculate original price before discount
-  // 10% discount for airtime, 30.7% for packages
-  const discountPercent = isPackage ? 30.7 : 10;
+  // 10% discount for airtime, 20% for packages
+  const discountPercent = isPackage ? 20 : 10;
   const originalPrice = product.price / (1 - discountPercent / 100);
   const discountAmount = originalPrice - product.price;
   
@@ -33,7 +32,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className={`relative ${isAirtime ? 'aspect-auto p-4' : 'aspect-square'} overflow-hidden bg-muted flex items-center justify-center`}>
         {isPackage && (
           <div className="absolute top-0 right-0 bg-primary text-primary-foreground px-3 py-1 rounded-bl-lg font-medium text-sm animate-pulse">
-            30.7% OFF
+            20% OFF
           </div>
         )}
         <div className={`text-3xl font-bold ${isAirtime ? 'text-primary' : isPackage ? 'text-rose-600' : 'text-accent-foreground'}`}>
@@ -44,9 +43,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
           )}
         </div>
       </div>
+      
       <CardContent className="p-4">
         <h3 className="text-lg font-medium leading-tight">{product.name}</h3>
         <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{product.description}</p>
+        
         <div className="mt-2 flex items-baseline gap-2">
           <p className="font-medium text-primary">{product.price.toFixed(2)} Birr</p>
           <p className="text-sm line-through text-muted-foreground">{originalPrice.toFixed(2)} Birr</p>
@@ -66,10 +67,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <CardFooter className="p-4 pt-0">
         {isPackage && (
           <div className="w-full mb-2 text-xs text-muted-foreground">
-            <p className="flex items-center gap-1 mb-1">
-              <CheckCircle2 className="h-3 w-3 text-green-600" />
-              <span>Faster speeds, better value</span>
-            </p>
             <p className="flex items-center gap-1">
               <CheckCircle2 className="h-3 w-3 text-green-600" />
               <span>Special promotion ends soon</span>
