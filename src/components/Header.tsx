@@ -37,12 +37,13 @@ const Header = ({ onOpenCart }: HeaderProps) => {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-all duration-300 border-b",
+        "py-4 sm:py-5 px-4 sm:px-6 lg:px-8", // Added responsive padding
         isScrolled 
-          ? "py-2 bg-background/95 shadow-sm" 
-          : "py-4 bg-background/50"
+          ? "bg-background/95 shadow-sm" 
+          : "bg-background/50"
       )}
     >
-      <div className="container flex items-center justify-between">
+      <div className="container flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center space-x-2">
           <h1 className="text-xl font-medium">
             <span className="text-primary">Shop</span>
@@ -76,3 +77,4 @@ const Header = ({ onOpenCart }: HeaderProps) => {
 };
 
 export default Header;
+
